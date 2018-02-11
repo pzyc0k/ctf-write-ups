@@ -5,10 +5,14 @@
 
 We were provided a pcap-ng capture file so it's time for Wireshark.
 
+![](pcapng.png)
+
 Pcap file had 1675 packets and with description of challenge in mind, we extracted all files from HTTP protocol trying to find some clues. The search query for Wireshark was 
 ```
 http.request.method == "GET" or http.response.code == 200
 ```
+
+![](http.png)
 
 These packets provided some images, which we extracted with export bytes option from Wireshark.
 We tried a stego challenge approach with binwalk, steghide and exif-tool but nothing seemed to work because all images had a trollish vibe.
@@ -19,6 +23,8 @@ This [writeup](https://github.com/ctfs/write-ups-2015/tree/master/nuit-du-hack-c
 tshark -r challenge.pcapng -x 'icmp and ip.src==192.168.42.218' | grep 0020
 '''
 and got the output you see in the next picture
+
+![](icmp.png)
 
 After combining all hex digits i got the next hex characters
 ```
@@ -34,7 +40,12 @@ xxd -r -p hexed flag
 
 After conversion a gzip popped up that had our precious flag inside.
 
+![](flag.png)
 
 ```
 hackim18{'51mpL3st_Ch4ll3ng3_s0lv3d'}
 ```
+
+## References
+* https://github.com/ctfs/write-ups-2015/tree/master/nuit-du-hack-ctf-quals-2015/forensic/private
+* https://shankaraman.wordpress.com/tag/asis-ctf-2014-finals-forensics-writeup/
